@@ -1,0 +1,83 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="product-box row">
+      <div class="product-img col-lg-6">
+        <img
+          class="img-fluid"
+          [src]="productDetail.image"
+          [alt]="productDetail.product_name"
+        />
+      </div>
+      <div class="col-lg-6 text-start">
+        <div class="product-details">
+          <a [routerLink]="['/product/details']" (click)="closeModal()">
+            {{ productDetail.product_name }}
+          </a>
+          <div class="product-price">
+            ${{ productDetail.discount_price }}
+            <del>${{ productDetail.price }}</del>
+          </div>
+          <div class="product-view">
+            <h6 class="f-w-500">Product Details</h6>
+            <p class="mb-0">{{ productDetail.description }}</p>
+          </div>
+          <div class="product-size">
+            <ul class="common-flex">
+              <li>
+                <button class="btn" type="button">M</button>
+              </li>
+              <li>
+                <button class="btn" type="button">L</button>
+              </li>
+              <li>
+                <button class="btn" type="button">Xl</button>
+              </li>
+            </ul>
+          </div>
+          <div class="product-qnty">
+            <h6 class="f-w-500">Quantity</h6>
+            <fieldset>
+              <div class="touchspin-wrapper">
+                <button
+                  class="decrement-touchspin btn-touchspin touchspin-primary"
+                  (click)="changeValue(-1)"
+                >
+                  <i class="fa-solid fa-minus"> </i>
+                </button>
+                <input
+                  class="input-touchspin spin-outline-primary"
+                  type="number"
+                  value="{{ counter }}"
+                  readonly
+                />
+                <button
+                  class="increment-touchspin btn-touchspin touchspin-primary"
+                  (click)="changeValue(1)"
+                >
+                  <i class="fa-solid fa-plus"> </i>
+                </button>
+              </div>
+            </fieldset>
+          </div>
+          <div>
+            <a
+              class="btn btn-primary"
+              href="javascript:void(0)"
+              (click)="closeModal()"
+              [routerLink]="['/cart']"
+              >Add to Cart</a
+            >
+            <a
+              class="btn btn-primary ms-2"
+              href="javascript:void(0)"
+              (click)="closeModal()"
+              [routerLink]="['/product/details']"
+              >View Details</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-close" type="button" (click)="closeModal()"></button>
+  </div>
+</div>

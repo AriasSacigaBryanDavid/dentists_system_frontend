@@ -1,11 +1,11 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: "app-loader",
+  selector: 'app-loader',
   imports: [],
-  templateUrl: "./loader.html",
+  templateUrl: './loader.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: "./loader.scss",
+  styleUrl: './loader.scss',
 })
 export class Loader {
   public loaderHide: boolean = false;

@@ -1,0 +1,137 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header border-light">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-md-6 col-sm-8 mb-2 mb-sm-0">
+                            <input
+                                [(ngModel)]="searchTerm"
+                                (ngModelChange)="onSearch($event)"
+                                type="text"
+                                class="form-control"
+                                placeholder="Buscar usuario...">
+                        </div>
+                        <div class="col-md-3 col-sm-4 d-flex gap-2 justify-content-end">
+                            <button
+                                class="btn btn-primary"
+                                (click)="openModal()"
+                                title="Nuevo Usuario"
+                                aria-label="Crear Nuevo Usuario">
+                                <app-feather-icon [icon]="'plus'" />
+                            </button>
+                            <button
+                                class="btn btn-icon"
+                                [class.btn-soft-danger]="filterStatus === 1"
+                                [class.btn-soft-primary]="filterStatus === 0"
+                                (click)="toggleStatusFilter()"
+                                [title]="filterStatus === 1 ? 'Ver Papelera' : 'Ver Activos'">
+                                @if (filterStatus === 1) {
+                                    <app-feather-icon [icon]="'trash-2'" />
+                                } @else {
+                                    <app-feather-icon [icon]="'grid'" />
+                                }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-custom table-centered table-hover w-100 mb-0">
+                        <thead class="bg-light align-middle bg-opacity-25 thead-sm">
+                            <tr class="text-uppercase fs-xxs">
+                                <th>Usuario</th>
+                                <th>Nombre Completo</th>
+                                <th>Rol</th>
+                                <th>Turno</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (totalItems > 0) {
+                                @for (item of dataList; track item.uuid) {
+                                    <tr>
+                                        <td>
+                                            <span class="fw-semibold text-dark">{{ item.username }}</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="m-0 d-flex align-items-center gap-1">
+                                                <span class="fs-base mb-0 lh-base line-clamp" [title]="item.full_name || (item.first_name + ' ' + item.last_name)">
+                                                    {{ item.full_name || (item.first_name + ' ' + item.last_name) }}
+                                                </span>
+                                            </h5>
+                                            @if (item.email) {
+                                                <small class="text-muted">{{ item.email }}</small>
+                                            }
+                                        </td>
+                                        <td>
+                                            <span class="badge" [class]="getRoleBadgeClass(item.role)">
+                                                {{ getRoleLabel(item.role) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border">
+                                                {{ getTurnLabel(item.turn) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-label"
+                                                [class]="item.status === 1 ? 'text-success bg-success-subtle' : 'text-danger bg-danger-subtle'">
+                                                {{ item.status === 1 ? 'Activo' : 'Inactivo' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-center gap-1">
+                                                @if (item.status === 1) {
+                                                    <button (click)="openModal(item.uuid)" class="btn btn-default btn-icon btn-sm" title="Editar">
+                                                        <app-feather-icon [icon]="'edit'" />
+                                                    </button>
+                                                    <button (click)="showDelete(item.uuid)" class="btn btn-default btn-icon btn-sm text-danger" title="Eliminar">
+                                                        <app-feather-icon [icon]="'trash-2'" />
+                                                    </button>
+                                                }
+                                                @if (item.status === 0) {
+                                                    <button (click)="showRestore(item.uuid)" class="btn btn-default btn-icon btn-sm text-primary" title="Restaurar">
+                                                        <app-feather-icon [icon]="'refresh-cw'" />
+                                                    </button>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            } @else {
+                                <tr app-empty-table
+                                    class="text-center no-results"
+                                    [colspan]="6"
+                                    message="No se encontraron resultados"
+                                    subtitle="">
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer border-0">
+                    @if (totalItems > 0) {
+                        <app-custom-pagination
+                            itemsName="usuarios"
+                            [collectionSize]="totalItems"
+                            [(page)]="currentPage"
+                            [pageSize]="itemsPerPage"
+                            (pageChange)="onPageChange($event)">
+                        </app-custom-pagination>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (isModalOpen()) {
+        <app-user-modal
+            [userUuid]="selectedUserUuid()"
+            (closeModal)="closeModal()"
+            (refreshTable)="loadData()">
+        </app-user-modal>
+    }
+</div>

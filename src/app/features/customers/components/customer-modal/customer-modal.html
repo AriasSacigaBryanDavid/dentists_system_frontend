@@ -1,0 +1,148 @@
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content animate__animated animate__fadeInDown">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ customerUuid ? 'Editar Cliente' : 'Nuevo Cliente' }}</h4>
+                <button type="button" class="btn-close" [disabled]="loading" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="customerForm">
+                    <div class="row">
+                        <!-- NOMBRES -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Nombres <span class="text-danger">*</span></label>
+                                <span class="text-muted small">
+                                    {{ firstNameInput.value.length || 0 }}/100
+                                </span>
+                            </div>
+                            <input
+                                #firstNameInput
+                                type="text"
+                                class="form-control mt-1"
+                                formControlName="first_name"
+                                maxLength="100"
+                                placeholder="Ej. Juan"
+                                [class.is-invalid]="formControls['first_name'].invalid && (formControls['first_name'].dirty || formControls['first_name'].touched)">
+
+                            @if (formControls['first_name'].invalid && (formControls['first_name'].dirty || formControls['first_name'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['first_name'].hasError('required')) { <span>El nombre es requerido.</span> }
+                                    @if (formControls['first_name'].hasError('minlength')) { <span>Mínimo 2 caracteres.</span> }
+                                    @if (formControls['first_name'].hasError('maxlength')) { <span>Máximo 100 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- APELLIDOS -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Apellidos <span class="text-danger">*</span></label>
+                                <span class="text-muted small">
+                                    {{ lastNameInput.value.length || 0 }}/100
+                                </span>
+                            </div>
+                            <input
+                                #lastNameInput
+                                type="text"
+                                class="form-control mt-1"
+                                formControlName="last_name"
+                                maxLength="100"
+                                placeholder="Ej. Pérez"
+                                [class.is-invalid]="formControls['last_name'].invalid && (formControls['last_name'].dirty || formControls['last_name'].touched)">
+
+                            @if (formControls['last_name'].invalid && (formControls['last_name'].dirty || formControls['last_name'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['last_name'].hasError('required')) { <span>El apellido es requerido.</span> }
+                                    @if (formControls['last_name'].hasError('minlength')) { <span>Mínimo 2 caracteres.</span> }
+                                    @if (formControls['last_name'].hasError('maxlength')) { <span>Máximo 100 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- TELÉFONO -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Teléfono</label>
+                                <span class="text-muted small">
+                                    {{ phoneInput.value.length || 0 }}/20
+                                </span>
+                            </div>
+                            <input
+                                #phoneInput
+                                type="text"
+                                class="form-control mt-1"
+                                formControlName="phone"
+                                maxLength="20"
+                                placeholder="Ej. +593 99 999 9999"
+                                [class.is-invalid]="formControls['phone'].invalid && (formControls['phone'].dirty || formControls['phone'].touched)">
+
+                            @if (formControls['phone'].invalid && (formControls['phone'].dirty || formControls['phone'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['phone'].hasError('maxlength')) { <span>Máximo 20 caracteres.</span> }
+                                    @if (formControls['phone'].hasError('pattern')) { <span>Formato de teléfono no válido.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- EDAD -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Edad</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                formControlName="age"
+                                min="0"
+                                max="120"
+                                placeholder="Ej. 28"
+                                [class.is-invalid]="formControls['age'].invalid && (formControls['age'].dirty || formControls['age'].touched)">
+
+                            @if (formControls['age'].invalid && (formControls['age'].dirty || formControls['age'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['age'].hasError('min')) { <span>La edad no puede ser negativa.</span> }
+                                    @if (formControls['age'].hasError('max')) { <span>La edad máxima permitida es 120.</span> }
+                                    @if (formControls['age'].hasError('pattern')) { <span>Solo se permiten números enteros.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- DIRECCIÓN -->
+                        <div class="col-12 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Dirección</label>
+                                <span class="text-muted small">
+                                    {{ addressInput.value.length || 0 }}/255
+                                </span>
+                            </div>
+                            <textarea
+                                #addressInput
+                                rows="2"
+                                class="form-control mt-1"
+                                formControlName="address"
+                                maxLength="255"
+                                placeholder="Ej. Av. Principal #123 y Secundaria"
+                                [class.is-invalid]="formControls['address'].invalid && (formControls['address'].dirty || formControls['address'].touched)"></textarea>
+
+                            @if (formControls['address'].invalid && (formControls['address'].dirty || formControls['address'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['address'].hasError('maxlength')) { <span>Máximo 255 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" [disabled]="loading" (click)="close()">Cancelar</button>
+                <button type="button" class="btn btn-primary" [disabled]="customerForm.invalid || customerForm.pending || loading" (click)="onSubmit()">
+                    @if (loading) {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    }
+                    {{ customerUuid ? 'Guardar Cambios' : 'Crear Cliente' }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

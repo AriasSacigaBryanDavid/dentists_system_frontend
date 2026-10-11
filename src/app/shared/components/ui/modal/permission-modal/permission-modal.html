@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="modaldashboard">Create Role</h5>
+  <button class="btn-close" type="button" (click)="closeModal()"></button>
+</div>
+<div class="modal-body custom-input">
+  <div class="row">
+    <div class="col">
+      <div class="mb-lg-3 row mb-4 g-lg-3 g-2">
+        <div class="col-md-2">
+          <label class="form-label mb-0" for="validationName"
+            >Name <span class="txt-danger">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <input
+            class="form-control"
+            id="validationName"
+            type="text"
+            placeholder="Enter name"
+            required=""
+          />
+        </div>
+      </div>
+      <div class="row g-lg-3 g-2">
+        <div class="col-md-12">
+          <label class="form-label mb-0" for="validationName"
+            >Permissions <span class="txt-danger">*</span></label
+          >
+        </div>
+        <div class="col-12">
+          <div class="row permission-form g-2">
+            @for (module of permissions; track module) {
+              <div class="col-12">
+                <ul>
+                  <li>{{ module.name }}</li>
+                  <li>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input check-all"
+                        id="all"
+                        type="checkbox"
+                        [checked]="module.is_checked"
+                        (change)="checkUncheckAll($event, module)"
+                      />
+                      <label class="form-check-label" for="all">All</label>
+                    </div>
+                  </li>
+                  @for (
+                    permission of module.module_permission;
+                    track permission
+                  ) {
+                    <li>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          [id]="permission.permission_id"
+                          type="checkbox"
+                          [checked]="
+                            selectedPermission.includes(
+                              +permission.permission_id
+                            ) || permission.is_checked
+                              ? true
+                              : false
+                          "
+                          [value]="permission.permission_id"
+                          (change)="onPermissionChecked($event, module)"
+                        />
+                        <label
+                          class="form-check-label"
+                          [for]="permission.permission_id"
+                          >{{ permission.name }}</label
+                        >
+                      </div>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+            <div class="col-md-12 d-flex justify-content-end mt-3">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                (click)="closeModal()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

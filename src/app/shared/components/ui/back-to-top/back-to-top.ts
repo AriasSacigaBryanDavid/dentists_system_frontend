@@ -1,26 +1,26 @@
-import { ViewportScroller } from "@angular/common";
+import { ViewportScroller } from '@angular/common';
 import {
   Component,
   HostListener,
   inject,
   ChangeDetectionStrategy,
-} from "@angular/core";
+} from '@angular/core';
 
-import { FeatherIcon } from "../feather-icon/feather-icon";
+import { FeatherIcon } from '../feather-icon/feather-icon';
 
 @Component({
-  selector: "app-back-to-top",
+  selector: 'app-back-to-top',
   imports: [FeatherIcon],
-  templateUrl: "./back-to-top.html",
+  templateUrl: './back-to-top.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: "./back-to-top.scss",
+  styleUrl: './back-to-top.scss',
 })
 export class BackToTop {
   private viewScroller = inject(ViewportScroller);
 
   public show: boolean = false;
 
-  @HostListener("window:scroll", [])
+  @HostListener('window:scroll', [])
   onWindowScroll() {
     let number =
       window.pageYOffset ||

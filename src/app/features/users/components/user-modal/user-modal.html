@@ -1,0 +1,181 @@
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content animate__animated animate__fadeInDown">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ userUuid ? 'Editar Usuario' : 'Nuevo Usuario' }}</h4>
+                <button type="button" class="btn-close" [disabled]="loading" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="userForm">
+                    <div class="row">
+                        <!-- USUARIO (USERNAME) -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Usuario <span class="text-danger">*</span></label>
+                                <span class="text-muted small">
+                                    {{ usernameInput.value.length || 0 }}/150
+                                </span>
+                            </div>
+                            <input
+                                #usernameInput
+                                type="text"
+                                class="form-control mt-1"
+                                formControlName="username"
+                                maxLength="150"
+                                placeholder="Ej. jperez"
+                                [class.is-invalid]="formControls['username'].invalid && (formControls['username'].dirty || formControls['username'].touched)">
+
+                            @if (formControls['username'].invalid && (formControls['username'].dirty || formControls['username'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['username'].hasError('required')) { <span>El usuario es requerido.</span> }
+                                    @if (formControls['username'].hasError('minlength')) { <span>Mínimo 3 caracteres.</span> }
+                                    @if (formControls['username'].hasError('maxlength')) { <span>Máximo 150 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- EMAIL -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label mb-0">Correo Electrónico</label>
+                            <input
+                                type="email"
+                                class="form-control mt-1"
+                                formControlName="email"
+                                placeholder="Ej. juan.perez@empresa.com"
+                                [class.is-invalid]="formControls['email'].invalid && (formControls['email'].dirty || formControls['email'].touched)">
+
+                            @if (formControls['email'].invalid && (formControls['email'].dirty || formControls['email'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['email'].hasError('email')) { <span>Formato de correo no válido.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- NOMBRES -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Nombres <span class="text-danger">*</span></label>
+                                <span class="text-muted small">
+                                    {{ firstNameInput.value.length || 0 }}/100
+                                </span>
+                            </div>
+                            <input
+                                #firstNameInput
+                                type="text"
+                                class="form-control mt-1"
+                                formControlName="first_name"
+                                maxLength="100"
+                                placeholder="Ej. Juan"
+                                [class.is-invalid]="formControls['first_name'].invalid && (formControls['first_name'].dirty || formControls['first_name'].touched)">
+
+                            @if (formControls['first_name'].invalid && (formControls['first_name'].dirty || formControls['first_name'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['first_name'].hasError('required')) { <span>El nombre es requerido.</span> }
+                                    @if (formControls['first_name'].hasError('minlength')) { <span>Mínimo 2 caracteres.</span> }
+                                    @if (formControls['first_name'].hasError('maxlength')) { <span>Máximo 100 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- APELLIDOS -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="form-label mb-0">Apellidos <span class="text-danger">*</span></label>
+                                <span class="text-muted small">
+                                    {{ lastNameInput.value.length || 0 }}/100
+                                </span>
+                            </div>
+                            <input
+                                #lastNameInput
+                                type="text"
+                                class="form-control mt-1"
+                                formControlName="last_name"
+                                maxLength="100"
+                                placeholder="Ej. Pérez"
+                                [class.is-invalid]="formControls['last_name'].invalid && (formControls['last_name'].dirty || formControls['last_name'].touched)">
+
+                            @if (formControls['last_name'].invalid && (formControls['last_name'].dirty || formControls['last_name'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['last_name'].hasError('required')) { <span>El apellido es requerido.</span> }
+                                    @if (formControls['last_name'].hasError('minlength')) { <span>Mínimo 2 caracteres.</span> }
+                                    @if (formControls['last_name'].hasError('maxlength')) { <span>Máximo 100 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- ROL (SELECT) -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Rol <span class="text-danger">*</span></label>
+                            <select
+                                class="form-select"
+                                formControlName="role"
+                                [class.is-invalid]="formControls['role'].invalid && (formControls['role'].dirty || formControls['role'].touched)">
+                                @for (option of roleOptions; track option.value) {
+                                    <option [value]="option.value">{{ option.label }}</option>
+                                }
+                            </select>
+
+                            @if (formControls['role'].invalid && (formControls['role'].dirty || formControls['role'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['role'].hasError('required')) { <span>El rol es requerido.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- TURNO (SELECT) -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Turno <span class="text-danger">*</span></label>
+                            <select
+                                class="form-select"
+                                formControlName="turn"
+                                [class.is-invalid]="formControls['turn'].invalid && (formControls['turn'].dirty || formControls['turn'].touched)">
+                                @for (option of turnOptions; track option.value) {
+                                    <option [value]="option.value">{{ option.label }}</option>
+                                }
+                            </select>
+
+                            @if (formControls['turn'].invalid && (formControls['turn'].dirty || formControls['turn'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['turn'].hasError('required')) { <span>El turno es requerido.</span> }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- CONTRASEÑA -->
+                        <div class="col-12 mb-3">
+                            <label class="form-label">
+                                Contraseña
+                                @if (!userUuid) { <span class="text-danger">*</span> }
+                                @if (userUuid) { <span class="text-muted small fw-normal">(Dejar en blanco para conservar la actual)</span> }
+                            </label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                formControlName="password"
+                                placeholder="********"
+                                [class.is-invalid]="formControls['password'].invalid && (formControls['password'].dirty || formControls['password'].touched)">
+
+                            @if (formControls['password'].invalid && (formControls['password'].dirty || formControls['password'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    @if (formControls['password'].hasError('required')) { <span>La contraseña es requerida.</span> }
+                                    @if (formControls['password'].hasError('minlength')) { <span>Mínimo 6 caracteres.</span> }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" [disabled]="loading" (click)="close()">Cancelar</button>
+                <button type="button" class="btn btn-primary" [disabled]="userForm.invalid || userForm.pending || loading" (click)="onSubmit()">
+                    @if (loading) {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    }
+                    {{ userUuid ? 'Guardar Cambios' : 'Crear Usuario' }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

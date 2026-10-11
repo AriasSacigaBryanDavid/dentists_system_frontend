@@ -1,33 +1,33 @@
-import { NgClass } from "@angular/common";
+import { NgClass } from '@angular/common';
 import {
   Component,
   inject,
   input,
   ChangeDetectionStrategy,
-} from "@angular/core";
+} from '@angular/core';
 
-import { LayoutService } from "../../../services/layout.service";
+import { LayoutService } from '../../../services/layout.service';
 
 @Component({
-  selector: "app-svg-icon",
+  selector: 'app-svg-icon',
   imports: [NgClass],
-  templateUrl: "./svg-icon.html",
+  templateUrl: './svg-icon.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: "./svg-icon.scss",
+  styleUrl: './svg-icon.scss',
 })
 export class SvgIcon {
   layoutService = inject(LayoutService);
 
   public readonly icon = input<string | undefined>();
-  readonly class = input<string | undefined>(undefined, { alias: "class" });
+  readonly class = input<string | undefined>(undefined, { alias: 'class' });
 
   readonly change = input<boolean>(false);
 
   getSvgType() {
     return (
       document
-        .getElementsByClassName("page-sub-header")[0]
-        .getAttribute("icon") == "stroke-svg"
+        .getElementsByClassName('page-sub-header')[0]
+        .getAttribute('icon') == 'stroke-svg'
     );
   }
 }

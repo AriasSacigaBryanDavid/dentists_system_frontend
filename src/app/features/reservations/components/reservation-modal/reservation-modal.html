@@ -1,0 +1,119 @@
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content animate__animated animate__fadeInDown">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ reservationUuid ? 'Editar Cita' : 'Nueva Cita' }}</h4>
+                <button type="button" class="btn-close" [disabled]="loading" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="reservationForm">
+                    <div class="row">
+                        <!-- CLIENTE (SELECT) -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Cliente <span class="text-danger">*</span></label>
+                            <select
+                                class="form-select"
+                                formControlName="customer"
+                                [class.is-invalid]="formControls['customer'].invalid && (formControls['customer'].dirty || formControls['customer'].touched)">
+                                <option value="" disabled selected>Seleccione un cliente...</option>
+                                @for (cust of customersList; track cust.uuid) {
+                                    <option [value]="cust.uuid">
+                                        {{ cust.full_name || (cust.first_name + ' ' + cust.last_name) }}
+                                    </option>
+                                }
+                            </select>
+
+                            @if (formControls['customer'].invalid && (formControls['customer'].dirty || formControls['customer'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    <span>El cliente es requerido.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- DOCTOR (SELECT) -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Doctor <span class="text-danger">*</span></label>
+                            <select
+                                class="form-select"
+                                formControlName="doctor"
+                                [class.is-invalid]="formControls['doctor'].invalid && (formControls['doctor'].dirty || formControls['doctor'].touched)">
+                                <option value="" disabled selected>Seleccione un doctor...</option>
+                                @for (doc of doctorsList; track doc.uuid) {
+                                    <option [value]="doc.uuid">
+                                        {{ doc.full_name || (doc.first_name + ' ' + doc.last_name) }}
+                                    </option>
+                                }
+                            </select>
+
+                            @if (formControls['doctor'].invalid && (formControls['doctor'].dirty || formControls['doctor'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    <span>El doctor es requerido.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- FECHA Y HORA -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha y Hora <span class="text-danger">*</span></label>
+                            <input
+                                type="datetime-local"
+                                class="form-control"
+                                formControlName="date_time"
+                                [class.is-invalid]="formControls['date_time'].invalid && (formControls['date_time'].dirty || formControls['date_time'].touched)">
+
+                            @if (formControls['date_time'].invalid && (formControls['date_time'].dirty || formControls['date_time'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    <span>La fecha y hora son requeridas.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- ESTADO (SELECT) -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Estado <span class="text-danger">*</span></label>
+                            <select
+                                class="form-select"
+                                formControlName="states"
+                                [class.is-invalid]="formControls['states'].invalid && (formControls['states'].dirty || formControls['states'].touched)">
+                                @for (opt of stateOptions; track opt.value) {
+                                    <option [value]="opt.value">{{ opt.label }}</option>
+                                }
+                            </select>
+
+                            @if (formControls['states'].invalid && (formControls['states'].dirty || formControls['states'].touched)) {
+                                <div class="invalid-feedback d-block">
+                                    <span>El estado es requerido.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- OBSERVACIONES -->
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Observaciones</label>
+                            <textarea
+                                rows="3"
+                                class="form-control"
+                                formControlName="observation"
+                                placeholder="Notas o motivo de la consulta..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" [disabled]="loading" (click)="close()">Cancelar</button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="reservationForm.invalid || reservationForm.pending || loading"
+                    (click)="onSubmit()">
+                    @if (loading) {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    }
+                    {{ reservationUuid ? 'Guardar Cambios' : 'Crear Cita' }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

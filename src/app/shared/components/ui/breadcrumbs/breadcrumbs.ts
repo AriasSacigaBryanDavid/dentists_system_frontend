@@ -1,21 +1,21 @@
-import { Component, inject, ChangeDetectionStrategy } from "@angular/core";
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
   Router,
   RouterModule,
-} from "@angular/router";
+} from '@angular/router';
 
-import { filter, map } from "rxjs";
+import { filter, map } from 'rxjs';
 
-import { SvgIcon } from "../svg-icon/svg-icon";
+import { SvgIcon } from '../svg-icon/svg-icon';
 
 @Component({
-  selector: "app-breadcrumbs",
+  selector: 'app-breadcrumbs',
   imports: [RouterModule, SvgIcon],
-  templateUrl: "./breadcrumbs.html",
+  templateUrl: './breadcrumbs.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: "./breadcrumbs.scss",
+  styleUrl: './breadcrumbs.scss',
 })
 export class Breadcrumbs {
   private activatedRoute = inject(ActivatedRoute);
@@ -38,17 +38,17 @@ export class Breadcrumbs {
           }
           return route;
         }),
-        filter((route) => route.outlet === "primary"),
+        filter((route) => route.outlet === 'primary'),
       )
       .subscribe((route) => {
         const routeSnapshot = route.snapshot;
 
         this.breadcrumbs = {
-          parentBreadcrumb: route.parent?.snapshot.data["breadcrumb"] || "",
-          childBreadcrumb: routeSnapshot.data["breadcrumb"] || "",
+          parentBreadcrumb: route.parent?.snapshot.data['breadcrumb'] || '',
+          childBreadcrumb: routeSnapshot.data['breadcrumb'] || '',
         };
 
-        this.title = routeSnapshot.data["title"] || "";
+        this.title = routeSnapshot.data['title'] || '';
       });
   }
 }

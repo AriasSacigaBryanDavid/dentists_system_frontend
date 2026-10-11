@@ -1,0 +1,47 @@
+.empty-table-message {
+    padding: 2rem 1rem;
+
+    .empty-logo {
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+        object-fit: contain;
+        opacity: 0.6;
+
+        @media (max-width: 576px) {
+            max-width: 120px;
+        }
+    }
+
+    .empty-title {
+        font-size: clamp(1.25rem, 3vw, 2rem);
+        font-weight: 600;
+
+        .dot,
+        .dot-two,
+        .dot-three {
+            font-size: inherit;
+            opacity: 0;
+            animation: dotAnimation 2s infinite;
+        }
+
+        .dot { animation-delay: 0.3s; }
+        .dot-two { animation-delay: 0.6s; }
+        .dot-three { animation-delay: 0.9s; }
+    }
+
+    .empty-subtitle {
+        font-size: clamp(0.875rem, 1.5vw, 1rem);
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+@keyframes dotAnimation {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}

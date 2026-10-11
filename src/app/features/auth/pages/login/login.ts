@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true
 })
 export class LoginComponent implements OnInit {
-  
+
   // INJECTS
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   // UI States
-  public coreConfig: any;
   public loading = false;
   public submitted = false;
   public passwordTextType = false;

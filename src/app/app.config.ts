@@ -1,5 +1,5 @@
 import { DecimalPipe } from "@angular/common";
-import { HttpClient, provideHttpClient, withXhr } from "@angular/common/http";
+import { HttpClient, provideHttpClient, withInterceptors, withXhr } from "@angular/common/http";
 import {
   ApplicationConfig,
   importProvidersFrom,
@@ -13,6 +13,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { provideToastr } from "ngx-toastr";
 
 import { routes } from "./app.routes";
+import { authInterceptor } from "./core/helpers/auth.interceptor";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -23,7 +24,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     DecimalPipe,
     provideAnimations(),
-    provideHttpClient(withXhr()),
+    provideHttpClient(
+      withInterceptors([authInterceptor]),
+      withXhr()
+    ),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
